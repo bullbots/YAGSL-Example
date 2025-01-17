@@ -1,0 +1,33 @@
+{
+  "NetworkTables": {
+    "retained": {
+      "SmartDashboard": {
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/navX-Sensor[2]": "Gyro"
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "1891"
+  }
+}

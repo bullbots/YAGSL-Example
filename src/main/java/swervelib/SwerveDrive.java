@@ -588,6 +588,7 @@ public class SwerveDrive
     for (SwerveModule module : swerveModules)
     {
       module.setDesiredState(desiredStates[module.moduleNumber], isOpenLoop, false);
+      // break;
     }
   }
 
