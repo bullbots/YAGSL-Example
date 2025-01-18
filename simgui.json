@@ -6,6 +6,11 @@
           "open": true
         }
       },
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [5]": {
         "header": {
           "open": true
@@ -55,12 +60,17 @@
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/Swerve Drive": "Alerts",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
       "/SmartDashboard/navX-Sensor[1]": "Gyro",
-      "/SmartDashboard/navX-Sensor[2]": "Gyro",
       "/SmartDashboard/navX-Sensor[4]": "Gyro"
     },
     "windows": {
@@ -70,6 +80,20 @@
         }
       },
       "/SmartDashboard/Field": {
+        "OdometryPose": {
+          "arrowColor": [
+            255.0,
+            255.0,
+            0.0,
+            255.0
+          ],
+          "color": [
+            224.99996948242188,
+            0.0,
+            255.0,
+            255.0
+          ]
+        },
         "XModules": {
           "arrowColor": [
             0.09611687064170837,
@@ -95,30 +119,15 @@
   },
   "NetworkTables": {
     "transitory": {
+      "FMSInfo": {
+        "open": true
+      },
       "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
         "open": true,
         "swerve": {
-          "double[]##v_/SmartDashboard/swerve/desiredChassisSpeeds": {
-            "open": true
-          },
-          "double[]##v_/SmartDashboard/swerve/desiredStates": {
-            "open": true
-          },
-          "modules": {
-            "backleft": {
-              "open": true
-            },
-            "backright": {
-              "open": true
-            },
-            "frontleft": {
-              "open": true
-            },
-            "frontright": {
-              "open": true
-            },
-            "open": true
-          },
           "open": true
         }
       }
