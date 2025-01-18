@@ -1,47 +1,46 @@
 package swervelib.imu;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.MutAngularVelocity;
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.Optional;
 
-/** IMU Swerve class for the {@link ADIS16448_IMU} device. */
-public class ADIS16448Swerve extends SwerveIMU {
+/** SwerveIMU interface for the Boron {@link Canandgyro} by Redux Robotics */
+public class CanandgyroSwerve extends SwerveIMU {
 
-  /** {@link ADIS16448_IMU} device to read the current headings from. */
-  private final ADIS16448_IMU imu;
+  /** Wait time for status frames to show up. */
+  public static double STATUS_TIMEOUT_SECONDS = 0.04;
+  /** Boron {@link Canandgyro} by Redux Robotics. */
+  private final Canandgyro imu;
   /** Mutable {@link MutAngularVelocity} for readings. */
-  private final MutAngularVelocity yawVel = new MutAngularVelocity(0, 0, DegreesPerSecond);
-  /** Offset for the ADIS16448. */
+  private final MutAngularVelocity yawVel = new MutAngularVelocity(0, 0, RotationsPerSecond);
+  /** Offset for the Boron {@link Canandgyro}. */
   private Rotation3d offset = new Rotation3d();
   /** Inversion for the gyro */
   private boolean invertedIMU = false;
 
   /**
-   * Construct the ADIS16448 imu and reset default configurations. Publish the gyro to the
-   * SmartDashboard.
+   * Generate the SwerveIMU for {@link Canandgyro}.
+   *
+   * @param canid CAN ID for the Boron {@link Canandgyro}
    */
-  public ADIS16448Swerve() {
-    imu = new ADIS16448_IMU();
-    factoryDefault();
-    SmartDashboard.putData(imu);
+  public CanandgyroSwerve(int canid) {
+    imu = new Canandgyro(canid);
   }
 
-  /** Reset IMU to factory default. */
+  /** Reset {@link Canandgyro} to factory default. */
   @Override
   public void factoryDefault() {
-    offset = new Rotation3d(0, 0, 0);
-    imu.calibrate();
+    imu.resetFactoryDefaults(STATUS_TIMEOUT_SECONDS);
   }
 
-  /** Clear sticky faults on IMU. */
+  /** Clear sticky faults on {@link Canandgyro}. */
   @Override
   public void clearStickyFaults() {
-    // Do nothing.
+    imu.clearStickyFaults();
   }
 
   /**
@@ -67,12 +66,9 @@ public class ADIS16448Swerve extends SwerveIMU {
    *
    * @return {@link Rotation3d} from the IMU.
    */
+  @Override
   public Rotation3d getRawRotation3d() {
-    Rotation3d reading =
-        new Rotation3d(
-            Math.toRadians(-imu.getGyroAngleX()),
-            Math.toRadians(-imu.getGyroAngleY()),
-            Math.toRadians(-imu.getGyroAngleZ()));
+    Rotation3d reading = imu.getRotation3d();
     return invertedIMU ? reading.unaryMinus() : reading;
   }
 
@@ -90,21 +86,22 @@ public class ADIS16448Swerve extends SwerveIMU {
    * Fetch the acceleration [x, y, z] from the IMU in meters per second squared. If acceleration
    * isn't supported returns empty.
    *
-   * @return {@link Translation3d} of the acceleration.
+   * @return {@link Translation3d} of the acceleration as an {@link Optional}.
    */
   @Override
   public Optional<Translation3d> getAccel() {
-    return Optional.of(new Translation3d(imu.getAccelX(), imu.getAccelY(), imu.getAccelZ()));
+
+    return Optional.of(
+        new Translation3d(imu.getAccelerationFrame().getValue()).times(9.81 / 16384.0));
   }
 
   @Override
   public MutAngularVelocity getYawAngularVelocity() {
-
-    return yawVel.mut_setMagnitude(imu.getRate());
+    return yawVel.mut_setMagnitude(imu.getAngularVelocityYaw());
   }
 
   /**
-   * Get the instantiated IMU object.
+   * Get the instantiated {@link Canandgyro} IMU object.
    *
    * @return IMU object.
    */
