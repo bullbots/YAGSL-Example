@@ -114,7 +114,10 @@
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
       }
     }
   },
@@ -161,6 +164,9 @@
       }
     }
   },
+  "NetworkTables Info": {
+    "visible": true
+  },
   "Plot": {
     "Plot <0>": {
       "plots": [
@@ -176,7 +182,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 196,
+          "height": 2,
           "series": [
             {
               "color": [
@@ -196,7 +202,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 196,
+          "height": 2,
           "series": [
             {
               "color": [
@@ -216,7 +222,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 196,
+          "height": 2,
           "series": [
             {
               "color": [
