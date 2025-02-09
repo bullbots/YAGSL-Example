@@ -43,7 +43,7 @@ public class RobotContainer
                                                             .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(false);
+                                                            .allianceRelativeControl(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
@@ -117,7 +117,8 @@ public class RobotContainer
 
     if (RobotBase.isSimulation())
     {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+//      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     } else
     {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -126,7 +127,7 @@ public class RobotContainer
     if (Robot.isSimulation())
     {
       driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
+      driverXbox.y().whileTrue(drivebase.sysIdDriveMotorCommand());
 
     }
     if (DriverStation.isTest())
@@ -141,7 +142,7 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driverXbox.a().onTrue((Commands.print("drivebase::zeroGyro").andThen(drivebase::zeroGyro)));
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
