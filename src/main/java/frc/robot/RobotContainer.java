@@ -4,20 +4,27 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.Set;
+
 import swervelib.SwerveInputStream;
 
 /**
@@ -142,12 +149,34 @@ public class RobotContainer
     } else
     {
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      // driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      // driverXbox.x().onTrue(AutoBuilder.followPath(path));
+      driverXbox.x().onTrue(Commands.defer(() -> {
+        System.out.println("x pressed()");
+        // var cur_pose = drivebase.getPose();
+        // System.out.printf("pose: %s%n", cur_pose);
+        drivebase.resetOdometry(new Pose2d(0,0,Rotation2d.fromDegrees(0)));
+        // cur_pose = drivebase.getPose();
+        // System.out.printf("pose: %s%n", cur_pose);
+
+        PathConstraints constraints = new PathConstraints(
+        drivebase.getSwerveDrive().getMaximumChassisVelocity(), 4.0,
+        drivebase.getSwerveDrive().getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+
+        var targetPose = LimelightHelpers.getTargetPose_RobotSpace("limelight");
+        
+        System.out.printf("target x: %f target z: %f%n", targetPose[0], targetPose[2]);
+
+        Pose2d pose = new Pose2d(2, 0, Rotation2d.fromDegrees(0));
+
+        return AutoBuilder.pathfindToPose(pose, constraints);
+      }, Set.of(drivebase)));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               );
-      driverXbox.start().whileTrue(Commands.none());
+      // driverXbox.start().whileTrue(Commands.none());
+      driverXbox.start().whileTrue(Commands.idle(drivebase));
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());

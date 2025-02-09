@@ -25,6 +25,8 @@ public class Robot extends TimedRobot
 
   private Timer disabledTimer;
 
+  private int counter = 0;
+
   public Robot()
   {
     instance = this;
@@ -70,6 +72,16 @@ public class Robot extends TimedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    // counter ++;
+    // if(counter % 10 == 0) {
+    //   counter = 0;
+
+
+    //   var targetPose = LimelightHelpers.getTargetPose_RobotSpace("limelight");
+
+    //   System.out.printf("x: %f, y: %f, z: %f%n", targetPose[0], targetPose[1], targetPose[2]);
+    // }
   }
 
   /**

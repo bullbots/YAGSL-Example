@@ -158,6 +158,9 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void setupPathPlanner()
   {
+    var pose = getPose();
+    System.out.printf("SwerveSubsystem.setupPathPlanner(): pose: %s%n", pose);
+
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config;
