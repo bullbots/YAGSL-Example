@@ -8,6 +8,10 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -31,7 +35,15 @@ public class Robot extends TimedRobot
   private Timer disabledTimer;
 
   private int counter = 0;
-  private SwerveDrivePoseEstimator m_poseEstimator;
+  private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(new Translation2d(11.5,14)); //not sure if this is right
+  private Rotation2d m_gyro = new Rotation2d();
+  private SwerveModulePosition[] m_modulePositions = {
+    new SwerveModulePosition(), 
+    new SwerveModulePosition(), 
+    new SwerveModulePosition(), 
+    new SwerveModulePosition()
+  }; // WRONG POSITIONS, NEED TO BE FIXED
+  private SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, m_gyro, m_modulePositions, new Pose2d()); //not sure what to do for the last Pose2d
 
   public Robot()
   {

@@ -171,7 +171,7 @@ public class RobotContainer
           
           System.out.printf("target x: %f target z: %f%n", targetPose[0], targetPose[2]);
 
-          Pose2d pose = new Pose2d(2, 0, Rotation2d.fromDegrees(0));
+          Pose2d pose = new Pose2d(5, 5, Rotation2d.fromDegrees(60));
 
           return AutoBuilder.pathfindToPose(pose, constraints);
         }
